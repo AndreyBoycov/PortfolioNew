@@ -1,0 +1,83 @@
+.box_cart{
+  width: 200px;
+  height: 252px;
+  display: grid;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  place-self: center;
+  margin: 25px auto 0px auto;
+
+  .line_org{
+    height: 10px;
+    width: 200px;
+    background-color: #ffffff;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+
+  .logo_icon{
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1) inset;
+    margin: 10px auto;
+    display: grid;
+    place-items: center;
+
+    .logo_org{
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      display: grid;
+      place-items: center;
+    }
+  }
+
+  .center-text{
+    display: flex;
+    place-items: center;
+    place-content: center;
+    margin: 10px auto;
+  }
+
+  .head_name_org{
+    font-family: Roboto-Bold;
+    font-size: 14px;
+    color: #363636;
+  }
+
+  .name_contractor{
+    font-family: Roboto-Regular;
+    font-size: 12px;
+    color: #777777;
+  }
+
+
+  .part_contractor{
+    height: 32px;
+    width: 118px;
+    border-radius: 16px;
+    background-color: #f2f2f2;
+    font-family: Roboto-Regular;
+    font-size: 13px;
+    color: #363636;
+  }
+
+  .edit-cart {
+    display: none;
+  }
+}
+
+.box_cart:hover {
+  .edit-cart {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+

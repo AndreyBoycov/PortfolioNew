@@ -1,0 +1,96 @@
+<div [class]="hiddenInfo ? 'edit-organization' : 'edit-organization hidden-info'">
+  <div style="display: grid;
+              position: relative;
+              align-content: center;">
+    <span style="font-family: Roboto-Bold;
+                 font-size: 16px;
+                 justify-self: center;">
+      Присвоение роли и объекта организации
+    </span>
+    <i class="material-icons"
+       style="position: absolute;
+              justify-self: end;
+              align-self: center;
+              padding-right: 5px;">
+      clear
+    </i>
+  </div>
+
+  <div style="display: grid;">
+    <div style="display: flex;
+                cursor: pointer;
+                align-items: center;
+                height: 32px;
+                width: 178px;
+                border: 1px solid #f2f2f2;
+                border-radius: 16px;
+                justify-content: center;
+                justify-self: center;
+                align-self: end;"
+        (click)="hiddenInfo = !hiddenInfo">
+      <span style="font-family: Roboto-Regular;
+                   font-size: 13px">
+        Общая информация
+      </span>
+      <span>
+        <i class="material-icons">
+          keyboard_arrow_up
+        </i>
+      </span>
+    </div>
+      <div *ngIf="hiddenInfo"
+           class="general-information">
+        <div class="logo_icon_organization">
+          <img *ngIf="false"
+               [src]="'/assets/imgs/specc.png'" alt="">
+          <div *ngIf="true">
+            <svg style="height: 64px;
+                        width: 64px;">
+              <use [attr.xlink:href]="'/assets/imgs/svg_icons.svg#gag_pictures'"></use>
+            </svg>
+          </div>
+          <div class="icon-properties">
+            <i class="material-icons" style="color: #ffffff;
+                                             font-size: 64px;">
+              local_see
+            </i>
+          </div>
+        </div>
+        <div class="organization-names">
+<!--          <app-wbd-input [label]="'Полное наименование (Ru)'">-->
+<!--          </app-wbd-input>-->
+
+<!--          <app-wbd-input [label]="'Полное наименование (En)'">-->
+<!--          </app-wbd-input>-->
+
+<!--          <app-wbd-input [label]="'Сокращенное наименование (Ru)'">-->
+<!--          </app-wbd-input>-->
+
+<!--          <app-wbd-input [label]="'Сокращенное наименование (En)'">-->
+<!--          </app-wbd-input>-->
+        </div>
+      </div>
+  </div>
+
+  <div class="organization-names">
+<!--    <input style="grid-column: 1 / -1"-->
+<!--                   [innerText]="'Объект'">-->
+
+<!--    <app-wb-select label="Вышестоящая организация">-->
+<!--    </app-wb-select>-->
+
+<!--    <app-wb-select label="Роль организации">-->
+<!--    </app-wb-select>-->
+
+  </div>
+
+  <div style="width: 222px;
+              justify-self: center;">
+    <button buttonName="Сохранить организацию"
+                   buttonHeight="large"
+                   buttonForm="ellipse">
+    </button>
+  </div>
+
+
+</div>

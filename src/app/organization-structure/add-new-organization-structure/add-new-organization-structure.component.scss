@@ -1,0 +1,107 @@
+.logo_icon_organization{
+  width: 100px;
+  height: 100px;
+  position: relative;
+  border-radius: 50px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1) inset;
+  margin: 20px 25px 20px 25px;
+  display: grid;
+  place-items: center;
+}
+
+div{
+  transition: all 0.5s ease-in-out;
+}
+
+.organization-info-header-open {
+  height: 140px;
+  width: 800px;
+  display: grid;
+  grid-template-columns: 780px 20px;
+  margin: 25px auto;
+  transition: all 0.5s ease-in-out;
+
+  .organization-names {
+    align-items: center;
+    display: grid;
+    grid-gap: 10px 20px;
+    padding: 20px;
+    grid-template-columns: 1fr 1fr
+  }
+}
+
+.organization-info-header-close {
+  height: 140px;
+  width: 500px;
+  display: grid;
+  grid-template-columns: 480px 20px;
+  margin: 25px auto;
+  transition: all 0.5s ease-in-out;
+
+  .organization-names {
+    align-items: center;
+    grid-gap: 10px 0px;
+    display: grid;
+    padding: 20px;
+  }
+
+  .hidden-eng-name{
+    transform: translateX(-310px);
+  }
+}
+
+
+.arrow-open {
+  cursor: pointer;
+  width: 20px;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  background-color: #f3f3f3;
+  height: 120px;
+  align-self: center;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.organization-cart {
+  transition: all 0.5s ease-in-out;
+  padding: 0px 12px;
+}
+.organization-cart:hover{
+  transform: translateY(-20px);
+}
+
+.icon-properties {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  place-content: center;
+  place-items: center;
+  display: flex;
+  bottom: -20px;
+  height: 100%;
+  width: 100%;
+  opacity: 0.502;
+  background-color: #9a9a9a;
+  transform: scale(0.38 ,0.38);
+  transition: all 0.5s ease-in-out;
+}
+
+.icon-properties:hover {
+  transform: scale(1 , 1);
+  bottom: 0px;
+}
+
+.navigate-organization-cart {
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+  width: 36px;
+  height: 36px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}

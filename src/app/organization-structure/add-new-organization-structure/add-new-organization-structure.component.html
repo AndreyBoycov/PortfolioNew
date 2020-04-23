@@ -1,0 +1,119 @@
+<div style="position: absolute;
+    background-color: #e6e6e6;
+    padding-top: 50px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 70%;
+    z-index: 10;">
+  <div [class]="fullInfo ? 'organization-info-header-open' : 'organization-info-header-close'">
+    <div style="display: grid;
+                grid-template-columns: 150px 1fr;
+                box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                background-color: #ffffff;">
+      <div class="logo_icon_organization">
+        <img *ngIf="false"
+             [src]="'/assets/imgs/specc.png'" alt="">
+        <div *ngIf="true">
+          <svg style="height: 64px;
+                      width: 64px;">
+            <use [attr.xlink:href]="'/assets/imgs/svg_icons.svg#gag_pictures'"></use>
+          </svg>
+        </div>
+        <div class="icon-properties">
+          <i class="material-icons" style="color: #ffffff;
+                                           font-size: 64px;">
+            local_see
+          </i>
+        </div>
+      </div>
+      <div style="transition: all 0.5s ease-in-out;"
+           class="organization-names">
+        <input [innerText]="'Полное наименование (Ru)'">
+
+        <div style="transition: all 0.5s ease-in-out;"
+             class="hidden-eng-name">
+            <input *ngIf="fullInfo"
+                           [innerText]="'Полное наименование (En)'">
+        </div>
+
+        <input [innerText]="'Сокращенное наименование (Ru)'">
+
+        <div style="transition: all 0.5s ease-in-out;"
+             class="hidden-eng-name">
+          <input *ngIf="fullInfo"
+                 [innerText]="'Сокращенное наименование (En)'">
+        </div>
+      </div>
+    </div>
+    <div class="arrow-open"
+         (click)="fullInfo = !fullInfo">
+      <i class="material-icons"
+         style="transition: all 0.5s ease-in-out;"
+         [style.transform]="fullInfo ? 'rotate(180deg)' : 'rotate(0deg)'">
+        chevron_left
+      </i>
+    </div>
+  </div>
+
+  <div style="display: grid;
+              grid-template-columns: 46px 1fr 46px">
+
+    <div style="margin-left: 10px"
+         class="navigate-organization-cart">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </div>
+
+    <div style="display: flex;
+                justify-content: center;">
+      <div  *ngFor="let src of ['/assets/icons/iconsPunch.jpg', '/assets/icons/iconsPunch2.jpg', '/assets/icons/iconsPunch3.jpg', '/assets/icons/iconsPunch4.jpg']; let i = index"
+            class="organization-cart">
+        <app-organization-cart
+          [imgSrc]="src"
+          [index]="i">
+        </app-organization-cart>
+      </div>
+    </div>
+
+    <div style="margin-right: 10px"
+         class="navigate-organization-cart">
+      <i class="material-icons">
+        arrow_forward
+      </i>
+    </div>
+  </div>
+
+  <div style="position: relative; display: grid">
+    <div style="display: flex;
+                cursor: pointer;
+                width: 48px;
+                justify-items: center;
+                position: absolute;
+                border-radius: 24px;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 3px 0px 7px 0px rgba(0, 0, 0, 0.3);
+                align-self: center;
+                height: 48px;
+                margin: 20px;"
+         (click)="openEditOrg()">
+      <i class="material-icons">
+        add
+      </i>
+    </div>
+
+    <div style="width: 210px;
+                height: 48px;
+                cursor: pointer;
+                justify-self: center;
+                margin: 20px;">
+      <button buttonName="Сохранить изменения"
+                     buttonHeight="large"
+                     buttonForm="ellipse">
+      </button>
+    </div>
+  </div>
+</div>

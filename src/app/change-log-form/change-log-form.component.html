@@ -1,0 +1,393 @@
+<!--<div class="content-container without-paginator"
+     style="width: 1000px;
+     margin: 50px auto;
+     overflow: initial;">
+
+</div>-->
+<div class="content-container without-paginator"
+     style="width: 1040px;
+     margin: 50px auto;
+     overflow: initial;">
+    <div *ngFor="let panelData of tableData; index as headerIndex">
+      <div *ngIf="panelData.access" class="row_container">
+      <!--*************************************** Header container **************************************-->
+        <div class="panel_info content">
+          <div>
+            <div class="label">Зона</div>
+            <div class="info">{{panelData.area}}</div>
+          </div>
+
+          <div>
+            <div class="label">Номер линии</div>
+            <div class="info">{{panelData.lineNumber}}</div>
+          </div>
+
+          <div>
+            <div class="label">Номер стыка</div>
+            <div class="info">{{panelData.weldNumber}}</div>
+          </div>
+
+          <div>
+            <div class="label" style="text-align: center">Заявки</div>
+            <div class="info ellipsis-row" style="justify-content: center; flex-direction: row; text-align: center; width: 100%;"
+                 [matTooltip]="panelData.applicationNumber">
+              <ng-container *ngFor="let app of panelData.applications;">
+                <a class="application_ref" target="_blank"  style="cursor: pointer">{{app.number}}</a><br>
+              </ng-container>
+            </div>
+          </div>
+
+          <div>
+            <div class="label" style="text-align: center">Заключения</div>
+            <div class="info ellipsis-row"  style="justify-content: center; flex-direction: row; text-align: center; width: 100%;"
+                 [matTooltip]="panelData.conclusionNumber">
+              <ng-container *ngFor="let con of panelData.conclusions;">
+                <a class="conclusion_ref" target="_blank" style="cursor: pointer">{{con.number}}</a><br>
+              </ng-container>
+            </div>
+          </div>
+
+          <div>
+            <div class="label">Отменить изменения</div>
+            <div class="info">
+              {{panelData.dateAdded}}
+              <label class="label"
+                     style="padding: 0 0 0 10px">
+                {{panelData.timeAdded}}
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-left: 15px">
+            <div class="icon-style"
+                 [ngStyle]="{'visibility': activeRowIndexSet.has(headerIndex) ? 'visible' : 'hidden'}">
+                <div *ngIf="panelData.toggleHeadIcon; else headerIcon"
+                   (click)="setMultiStatus( headerIndex, null)"
+                   class="info undo-hover"
+                   style="padding: 0 5px;">
+                    Отменить
+                </div>
+                <ng-template #headerIcon>
+                <i class="material-icons hover-icon"
+                   (click)="setMultiStatus(headerIndex, 1)">
+                  done_all
+                </i>
+                <i class="material-icons hover-icon"
+                   (click)="setMultiStatus(headerIndex,0)">
+                  clear
+                </i>
+                </ng-template>
+            </div>
+          </div>
+
+          <div style="text-align: right">
+            <div class="icon-style"
+                 style="padding: 4px 5px 0; font-size: 14px; transition: 0.3s ease"
+                 (click)="toggleRow(subRow, headerIndex)"
+                 [ngStyle]="{'transform': !activeRowIndexSet.has(headerIndex) ? 'rotate(180deg)' : 'rotate(0deg)'}">
+              <i class="material-icons"
+                 style="user-select: none">
+                expand_less
+              </i>
+            </div>
+          </div>
+        </div>
+
+        <!--*************************************** SUB container **************************************-->
+        <div class="sub_content" #subRow [class.hidden]="true">
+
+                <!--************************************* loader **********************************************-->
+              <table *ngIf="panelData.loading; else table"
+                   style="display: grid; justify-items: center">
+                <mat-spinner [value]="10" [diameter]="40"></mat-spinner>
+              </table>
+
+                <!--*************************** Таблица с информацией и "айдентами" ***************************-->
+              <ng-template #table>
+                <!-- Таблица разделена три колонки. класс table-info-layout с фиксированными значениями-->
+                  <div class="table-info-layout">
+
+                      <!-- Колонка иконок слева, по умолчанию пустые контейнеры, цвет которых такойже как и у боди,
+                       поэтому его не видно(пустышка) -->
+                      <div class="left-icon">
+                          <!--Пустышка для шапки таблицы-->
+                          <div></div>
+                          <!------------------------------>
+
+                          <!-- Следующие создания контейнеров проверяется на наличие объекта "ident" -->
+                          <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                               class="container-properties"
+                               style="z-index: 2">
+                               <div *ngIf="approveInfo.subIdent.length"
+                                    class="visible-div left-div left-icon container-properties"
+                                    [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                    (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                    (mouseleave)="indexHovered = 'void'">
+                                   <i class="material-icons hover-icon"
+                                      style="opacity: 1">
+                                         library_books
+                                   </i>
+                                   <!-- Пустышки для "растяжения" контейнера-->
+                                   <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                        class="left-icon">
+                                       <div *ngFor="let approvedIdentInfo of approveInfo.subIdent; last as lastCall">
+                                           <div style="background-color: #ffffff; height: 35px"
+                                                [class.left-radius-last-container]="lastCall">
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                          </div>
+                      </div>
+
+                  <!-- Основная таблица информации. разделена на фиксированную ширину столбцов-->
+                   <div class="table-coll-box">
+                      <!-- Колонки таблицы -->
+                        <div class="table-row-box">
+                            <div class="label">Наименование поля</div>
+                            <div *ngFor="let approveInfo of panelData.subData; last as lastRow; index as indexRowInfo"
+                                 class="info table-row-box-cell long-cell"
+                                 [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'"
+                                 [class.bottom-radius-table]="approveInfo.subIdent.length && lastRow">
+                                <div class="row-for-hover g"
+                                     style="padding: 0px 5px 0px 5px;"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : 'none'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'"
+                                     [class.bottom-radius-table]="approveInfo.subIdent.length && lastRow">
+                                        {{approveInfo.displayText || '-'}}
+                                </div>
+                                 <!-- '-' <- без дефиса "display=grid" работает не корректно -->
+
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px"
+                                         class="label grid-properties">
+                                            {{approvedIdentInfo.displayText || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                      <!-- Остальные компоненты в этом теге сделаны по аналогии предфдущего,
+                      при изменени первого - их тоже нужно редактировать -->
+                        <div class="table-row-box">
+                            <div class="label">Настоящее значение</div>
+
+                            <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                                 class="info table-row-box-cell long-cell"
+                                 [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'">
+
+                                <div class="row-for-hover g"
+                                     style="width: 160px;"
+                                     matTooltip="{{approveInfo.oldValue}}"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'">
+                                        <span class="ellipsis-row">{{approveInfo.oldValue || '-'}}</span>
+                                </div>
+
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px; width: 160px;"
+                                         class="label grid-properties ellipsis-row"
+                                         matTooltip="{{approvedIdentInfo.oldValue}}">
+                                            {{approvedIdentInfo.oldValue || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-row-box">
+                            <div class="label">Измененное значение</div>
+                            <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                                 class="info table-row-box-cell long-cell"
+                                 [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'">
+                            <div class="row-for-hover g"
+                                 style="width: 160px;"
+                                     matTooltip="{{approveInfo.newValue}}"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'">
+                                        <span class="ellipsis-row">{{approveInfo.newValue || '-'}}</span>
+                            </div>
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px; width: 160px;"
+                                         class="label grid-properties ellipsis-row"
+                                         matTooltip="{{approvedIdentInfo.newValue}}">
+                                            {{approvedIdentInfo.newValue || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-row-box">
+                            <div class="label">Имя пользователя</div>
+                            <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                                 class="info table-row-box-cell long-cell"
+                                 [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'">
+                            <div class="row-for-hover g"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'">
+                                        {{approveInfo.login || '-'}}</div>
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px"
+                                         class="label grid-properties">
+                                            {{approvedIdentInfo.login || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-row-box">
+                            <div class="label">Дата</div>
+                            <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                                 class="info table-row-box-cell small-cell"
+                                 [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'">
+                            <div class="row-for-hover g"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'">
+                                        {{approveInfo.date || '-'}}</div>
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px"
+                                         class="label grid-properties">
+                                            {{approvedIdentInfo.date || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-row-box">
+                            <div class="label">Время</div>
+                            <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                                 class="info table-row-box-cell small-cell"
+                                [ngClass]="approveInfo.subIdent.length ? 'sub-info-ident' : 'sub-info-no-ident'">
+                                <div class="row-for-hover g"
+                                     [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                     (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                     (mouseleave)="indexHovered = 'void'">
+                                        {{approveInfo.time || '-'}}</div>
+                                <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     class="sub-ident-info">
+                                    <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                         style="height: 35px"
+                                         class="label grid-properties">
+                                            {{approvedIdentInfo.time || ' '}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="table-row-box">
+                                <div class="label">Действие</div>
+                                <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo; last as lastRow"
+                                     class="info table-row-box-cell middle-cell"
+                                     [class.bottom-radius-table]="approveInfo.subIdent.length && lastRow">
+                                      <div class="row-for-hover"
+                                           [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : 'none'"
+                                           (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                           (mouseleave)="indexHovered = 'void'">
+
+                                          <div *ngIf="approveInfo.status !== null; else setApprove"
+                                             (click)="undoStatus(approveInfo)"
+                                             class="label grid-properties undo-hover">
+                                              Отменить
+                                          </div>
+
+                                          <ng-template #setApprove>
+                                              <label (click)="setStatus(approveInfo, 1)"
+                                                     style="display: unset">
+                                                  <i *ngIf="approveInfo.subIdent.length <= 0; else doneAll"
+                                                     class="material-icons hover-icon">
+                                                      check
+                                                  </i>
+
+                                                  <ng-template #doneAll>
+                                                      <i class="material-icons hover-icon">
+                                                          done_all
+                                                      </i>
+                                                  </ng-template>
+                                              </label>
+
+                                              <i (click)="setStatus(approveInfo, 0)"
+                                                 class="material-icons hover-icon">
+                                                   close
+                                              </i>
+                                          </ng-template>
+                                      </div>
+
+                                   <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                        class="sub-ident-info">
+                                       <div *ngFor="let approvedIdentInfo of approveInfo.subIdent"
+                                            style="height: 35px">
+                                                {{' '}}
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                      <!-- Колонки иконок справа, аналогична колонкам слева -->
+                      <div class="right-icon">
+                          <div></div>
+                          <div *ngFor="let approveInfo of panelData.subData; index as indexRowInfo"
+                               class="container-properties"
+                               style="z-index: 2">
+                              <div *ngIf="approveInfo.subIdent.length"
+                                    class="visible-div right-div right-icon container-properties"
+                                    (click)="toggleSubRow(headerIndex + '-' + indexRowInfo)"
+                                   [style.background]="indexHovered === (indexRowInfo + '-' + headerIndex) ? '#dbe1ea' : '#e6e6e6'"
+                                   (mouseenter)="indexHovered = (indexRowInfo + '-' + headerIndex)"
+                                   (mouseleave)="indexHovered = 'void'">
+                                  <i class="material-icons hover-icon"
+                                     [class.rotate-icon]="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                     style="opacity: 1">
+                                        expand_more
+                                  </i>
+                                  <div *ngIf="toggleIdent.has(headerIndex + '-' + indexRowInfo)"
+                                       class="left-icon">
+                                       <div *ngFor="let approvedIdentInfo of  approveInfo.subIdent; last as lastCall">
+                                           <div style="background-color: #ffffff; height: 35px"
+                                                [class.right-radius-last-container]="lastCall">
+                                           </div>
+                                       </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </ng-template>
+
+            </div>
+      </div>
+    </div>
+
+
+<!--  <div-->
+<!--    style="display: flex; flex-direction: row; justify-content: center; position: sticky; bottom: 10px; z-index: 10;">-->
+
+<!--    <button buttonName="Принять изменения"-->
+<!--            [disabled]="!getDataForSave().length">-->
+<!--    </button>-->
+
+<!--    <button style="margin-left: 50px;"-->
+<!--            buttonName="Принять и скачать заключения"-->
+<!--            [disabled]="!getDataForSave().length">-->
+<!--    </button>-->
+
+<!--  </div>-->
+
+
+
+</div>
